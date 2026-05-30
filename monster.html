@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Play Monster Survivors online — a thrilling survival action game where you battle endless waves of monsters. Free to play in your browser, no download required." />
+  <meta name="keywords" content="Monster Survivors, monster survivors online, play monster survivors, survival game, browser game, free online game" />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="AI Nav Hub" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Monster Survivors — Play Free Online | AI Nav Hub" />
+  <meta property="og:description" content="Battle endless monster waves in Monster Survivors. Free browser game, no download needed." />
+  <meta property="og:url" content="https://ai-nav-hub.online/" />
+  <meta property="og:type" content="website" />
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://ai-nav-hub.online/" />
+
+  <title>Monster Survivors — Play Free Online | AI Nav Hub</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600;700&family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── Apple-Inspired Design Tokens ─── */
+    :root {
+      --bg:            #000000;
+      --surface:       #111111;
+      --surface-2:     #1c1c1e;
+      --surface-3:     #2c2c2e;
+      --border:        rgba(255,255,255,0.08);
+      --border-hover:  rgba(255,255,255,0.18);
+
+      --text-primary:   #f5f5f7;
+      --text-secondary: #a1a1a6;
+      --text-muted:     #6e6e73;
+
+      /* Apple accent palette */
+      --blue:    #0a84ff;
+      --blue-2:  #0071e3;
+      --indigo:  #5e5ce6;
+      --teal:    #30d158;
+      --orange:  #ff9f0a;
+      --red:     #ff453a;
+
+      --radius-sm:  10px;
+      --radius-md:  16px;
+      --radius-lg:  24px;
+      --radius-xl:  32px;
+
+      --font-display: 'Syne', sans-serif;
+      --font-body:    'DM Sans', sans-serif;
+
+      --shadow-card: 0 8px 40px rgba(0,0,0,0.5);
+      --shadow-glow: 0 0 60px rgba(10,132,255,0.15);
+    }
+
+    /* ─── Reset & Base ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ─── Noise Texture Overlay ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── Layout ─── */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ─── Header / Nav ─── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(0,0,0,0.72);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 52px;
+      gap: 16px;
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      color: var(--text-primary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-logo-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--blue);
+      box-shadow: 0 0 8px var(--blue);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.6; transform: scale(0.85); }
+    }
+
+    .nav-badge {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      padding: 3px 10px;
+      border-radius: 100px;
+    }
+
+    /* ─── Hero ─── */
+    .hero {
+      padding: 72px 0 48px;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -60px; left: 50%;
+      transform: translateX(-50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(10,132,255,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--blue);
+      background: rgba(10,132,255,0.1);
+      border: 1px solid rgba(10,132,255,0.25);
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 24px;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--blue);
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(40px, 7vw, 84px);
+      font-weight: 800;
+      letter-spacing: -2px;
+      line-height: 1.0;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #f5f5f7 30%, #a1a1a6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    h1 span {
+      background: linear-gradient(135deg, var(--blue) 0%, var(--indigo) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-tagline {
+      font-size: clamp(17px, 2.2vw, 21px);
+      font-weight: 300;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 36px;
+      line-height: 1.5;
+    }
+
+    .hero-stats {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+      margin-bottom: 52px;
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+    }
+
+    .stat-divider {
+      width: 1px; height: 36px;
+      background: var(--border);
+    }
+
+    /* ─── Game Frame Section ─── */
+    .game-section {
+      padding: 0 0 64px;
+    }
+
+    .game-wrapper {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-card), var(--shadow-glow);
+      position: relative;
+    }
+
+    .game-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+      gap: 12px;
+    }
+
+    .game-toolbar-dots {
+      display: flex;
+      gap: 7px;
+    }
+
+    .dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+    }
+    .dot-red    { background: #ff5f57; }
+    .dot-yellow { background: #ffbd2e; }
+    .dot-green  { background: #28c840; }
+
+    .game-url-bar {
+      flex: 1;
+      max-width: 480px;
+      background: var(--surface-3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 12px;
+      color: var(--text-muted);
+      font-family: 'SF Mono', monospace;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .game-fullscreen-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      background: var(--surface-3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .game-fullscreen-btn:hover {
+      border-color: var(--border-hover);
+      color: var(--text-primary);
+    }
+
+    .game-frame-container {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%; /* 16:9 */
+      background: #000;
+    }
+
+    .game-frame-container iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* ─── Content Sections ─── */
+    .content-grid {
+      padding: 64px 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 768px) {
+      .content-grid { grid-template-columns: 1fr; }
+    }
+
+    .content-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .content-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+
+    .content-card.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .card-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+
+    .icon-blue   { background: rgba(10,132,255,0.12); }
+    .icon-green  { background: rgba(48,209,88,0.12); }
+    .icon-orange { background: rgba(255,159,10,0.12); }
+    .icon-indigo { background: rgba(94,92,230,0.12); }
+    .icon-red    { background: rgba(255,69,58,0.12); }
+    .icon-teal   { background: rgba(100,210,255,0.12); }
+
+    h2 {
+      font-family: var(--font-display);
+      font-size: clamp(20px, 2.5vw, 26px);
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+
+    .card-text {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* Feature Tags */
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .tag {
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      background: var(--surface-2);
+      transition: all 0.2s;
+    }
+
+    .tag:hover {
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+
+    /* Tips List */
+    .tips-list {
+      list-style: none;
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tips-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 15px;
+      color: var(--text-secondary);
+      font-weight: 300;
+      line-height: 1.5;
+    }
+
+    .tip-num {
+      flex-shrink: 0;
+      width: 22px; height: 22px;
+      border-radius: 6px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+    }
+
+    /* About Overview */
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .about-item {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 18px;
+    }
+
+    .about-item-label {
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .about-item-value {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    /* ─── CTA Banner ─── */
+    .cta-section {
+      padding: 0 0 80px;
+    }
+
+    .cta-card {
+      background: linear-gradient(135deg, rgba(10,132,255,0.15) 0%, rgba(94,92,230,0.15) 100%);
+      border: 1px solid rgba(10,132,255,0.25);
+      border-radius: var(--radius-xl);
+      padding: 52px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-card::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: 50%;
+      transform: translateX(-50%);
+      width: 400px; height: 300px;
+      background: radial-gradient(circle, rgba(10,132,255,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-title {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 4vw, 40px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+
+    .cta-sub {
+      font-size: 17px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--blue-2);
+      color: #fff;
+      font-size: 17px;
+      font-weight: 500;
+      padding: 14px 36px;
+      border-radius: 100px;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+    }
+
+    .btn-primary:hover {
+      background: var(--blue);
+      transform: scale(1.04);
+      box-shadow: 0 8px 32px rgba(10,132,255,0.4);
+    }
+
+    .btn-primary:active { transform: scale(0.97); }
+
+    /* ─── Footer ─── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 0;
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      text-align: center;
+    }
+
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--text-secondary); }
+
+    .footer-copy {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* ─── Scroll Animations ─── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      animation: fadeUp 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.45s; }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 640px) {
+      .container { padding: 0 16px; }
+      .hero { padding: 48px 0 32px; }
+      .hero-stats { gap: 20px; }
+      .stat-divider { display: none; }
+      .content-card { padding: 24px; }
+      .cta-card { padding: 36px 24px; }
+      .game-url-bar { display: none; }
+    }
+
+    @media (max-width: 420px) {
+      h1 { letter-spacing: -1.5px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── Header ─── -->
+  <header>
+    <nav class="container nav" aria-label="Main navigation">
+      <a href="https://ai-nav-hub.online/" class="nav-logo">
+        <span class="nav-logo-dot"></span>
+        AI Nav Hub
+      </a>
+      <span class="nav-badge">Free Online Games</span>
+    </nav>
+  </header>
+
+  <!-- ─── Hero ─── -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-eyebrow fade-up">Play Now — No Download Required</div>
+      <h1 class="fade-up delay-1">
+        <span>Monster</span> Survivors
+      </h1>
+      <p class="hero-tagline fade-up delay-2">
+        Survive relentless monster hordes, upgrade your abilities, and outlast the apocalypse — all in your browser, for free.
+      </p>
+      <div class="hero-stats fade-up delay-3">
+        <div class="stat">
+          <span class="stat-value">∞</span>
+          <span class="stat-label">Monster Waves</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-value">Free</span>
+          <span class="stat-label">No Signup</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-value">Unity</span>
+          <span class="stat-label">Powered Engine</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-value">PC &amp; Mobile</span>
+          <span class="stat-label">Compatible</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Game Frame ─── -->
+  <section class="game-section" id="play" aria-label="Game player">
+    <div class="container">
+      <div class="game-wrapper fade-up">
+        <div class="game-toolbar" aria-hidden="true">
+          <div class="game-toolbar-dots">
+            <div class="dot dot-red"></div>
+            <div class="dot dot-yellow"></div>
+            <div class="dot dot-green"></div>
+          </div>
+          <div class="game-url-bar">cloud.onlinegames.io › monster-survivors</div>
+          <a href="https://cloud.onlinegames.io/games/2025/unity/monster-survivors/index-og.html"
+             target="_blank" rel="noopener noreferrer" class="game-fullscreen-btn">
+            ⤢ Fullscreen
+          </a>
+        </div>
+        <div class="game-frame-container">
+          <iframe
+            src="https://cloud.onlinegames.io/games/2025/unity/monster-survivors/index-og.html"
+            title="Monster Survivors — Free Online Survival Game"
+            allow="fullscreen; autoplay"
+            loading="lazy"
+            scrolling="no"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Content Cards ─── -->
+  <main class="container">
+    <div class="content-grid">
+
+      <!-- About -->
+      <div class="content-card full-width">
+        <div class="card-icon icon-blue">🎮</div>
+        <h2>About Monster Survivors</h2>
+        <p class="card-text">
+          Monster Survivors is an adrenaline-fueled top-down survival action game where you face off against continuously escalating waves of terrifying creatures. Inspired by the roguelite genre, the game challenges players to survive as long as possible while automatically attacking enemies and manually choosing powerful upgrades between rounds. Built on the Unity engine, it delivers smooth, responsive gameplay and polished visuals entirely within your browser — zero installations, zero paywalls.
+        </p>
+        <div class="about-grid">
+          <div class="about-item">
+            <div class="about-item-label">Genre</div>
+            <div class="about-item-value">Survival / Roguelite</div>
+          </div>
+          <div class="about-item">
+            <div class="about-item-label">Platform</div>
+            <div class="about-item-value">Browser (Unity)</div>
+          </div>
+          <div class="about-item">
+            <div class="about-item-label">Players</div>
+            <div class="about-item-value">Single Player</div>
+          </div>
+          <div class="about-item">
+            <div class="about-item-label">Controls</div>
+            <div class="about-item-value">Mouse / Touch</div>
+          </div>
+          <div class="about-item">
+            <div class="about-item-label">Price</div>
+            <div class="about-item-value">Free to Play</div>
+          </div>
+          <div class="about-item">
+            <div class="about-item-label">Save Data</div>
+            <div class="about-item-value">Auto-saves</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gameplay Features -->
+      <div class="content-card">
+        <div class="card-icon icon-green">⚔️</div>
+        <h2>Core Gameplay Features</h2>
+        <p class="card-text">
+          Every run of Monster Survivors is unique. Choose from multiple character classes, each with distinct starting weapons and passive traits. As waves intensify, collect XP orbs from fallen monsters to level up and unlock devastating skills — from rapid-fire projectiles to area-of-effect explosions and summoned allies.
+        </p>
+        <div class="tag-list">
+          <span class="tag">Auto-Attack Combat</span>
+          <span class="tag">Skill Upgrades</span>
+          <span class="tag">Multiple Characters</span>
+          <span class="tag">Boss Encounters</span>
+          <span class="tag">XP Progression</span>
+          <span class="tag">Roguelite Runs</span>
+        </div>
+      </div>
+
+      <!-- Why Play -->
+      <div class="content-card">
+        <div class="card-icon icon-orange">🔥</div>
+        <h2>Why Players Love It</h2>
+        <p class="card-text">
+          The game masterfully balances accessibility and depth. Newcomers can jump in immediately with intuitive controls, while veterans chase optimal builds and high-score leaderboards. Each 20–30 minute run feels fresh thanks to procedurally varied enemy spawns and randomized upgrade choices, making "just one more run" an irresistible temptation.
+        </p>
+        <div class="tag-list">
+          <span class="tag">Easy to Learn</span>
+          <span class="tag">Hard to Master</span>
+          <span class="tag">Replayable</span>
+          <span class="tag">No Ads</span>
+        </div>
+      </div>
+
+      <!-- Beginner Tips -->
+      <div class="content-card">
+        <div class="card-icon icon-indigo">💡</div>
+        <h2>Beginner Survival Tips</h2>
+        <ul class="tips-list">
+          <li><span class="tip-num">1</span>Always keep moving — standing still is a death sentence in the later waves.</li>
+          <li><span class="tip-num">2</span>Prioritize area-of-effect upgrades early to handle swarms of smaller enemies.</li>
+          <li><span class="tip-num">3</span>Collect XP orbs immediately; letting them sit puts you behind on level-ups.</li>
+          <li><span class="tip-num">4</span>Use terrain edges to funnel monster groups into predictable paths.</li>
+          <li><span class="tip-num">5</span>Pick one weapon synergy and commit — spreading upgrades dilutes your power.</li>
+        </ul>
+      </div>
+
+      <!-- System Requirements -->
+      <div class="content-card">
+        <div class="card-icon icon-teal">🖥️</div>
+        <h2>System Requirements</h2>
+        <p class="card-text">
+          Monster Survivors runs entirely in modern web browsers using Unity WebGL technology. For the best experience, use an up-to-date Chromium-based browser on desktop. Mobile devices with Chrome or Safari on iOS/Android are also fully supported, though a larger screen enhances visibility during intense waves.
+        </p>
+        <div class="tag-list">
+          <span class="tag">Chrome 90+</span>
+          <span class="tag">Firefox 88+</span>
+          <span class="tag">Safari 15+</span>
+          <span class="tag">Edge 90+</span>
+          <span class="tag">iOS Safari</span>
+          <span class="tag">Android Chrome</span>
+        </div>
+      </div>
+
+      <!-- Game Modes -->
+      <div class="content-card">
+        <div class="card-icon icon-red">🏆</div>
+        <h2>Challenge Modes &amp; Progression</h2>
+        <p class="card-text">
+          Beyond the standard survival mode, Monster Survivors features escalating difficulty tiers that unlock new enemy variants, environmental hazards, and exclusive upgrades. Reach the 30-minute mark to face the ultimate boss gauntlet — a true test of how well you've optimized your build over the course of a run.
+        </p>
+        <div class="tag-list">
+          <span class="tag">Survival Mode</span>
+          <span class="tag">Hard Difficulty</span>
+          <span class="tag">Boss Gauntlet</span>
+          <span class="tag">Unlockables</span>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ─── CTA ─── -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-card">
+        <h2 class="cta-title">Ready to Survive the Horde?</h2>
+        <p class="cta-sub">Jump straight into the action — no sign-up, no download, just pure survival gameplay.</p>
+        <a href="#play" class="btn-primary">▶ Play Monster Survivors Free</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Footer ─── -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-logo">AI Nav Hub</div>
+        <nav class="footer-links" aria-label="Footer navigation">
+          <a href="https://ai-nav-hub.online/">Home</a>
+          <a href="https://ai-nav-hub.online/games/">All Games</a>
+          <a href="https://ai-nav-hub.online/privacy/">Privacy Policy</a>
+          <a href="https://ai-nav-hub.online/contact/">Contact</a>
+        </nav>
+        <p class="footer-copy">© 2026 AI Nav Hub · ai-nav-hub.online · All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
